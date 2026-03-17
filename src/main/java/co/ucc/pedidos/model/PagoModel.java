@@ -21,7 +21,7 @@ public class PagoModel extends Transaccion {
 
     @Override
     public boolean validarTransaccion() {
-        return validarMetodoPago() && getMonto() > 0;
+        return metodoPago != null && !metodoPago.isEmpty() && getMonto() > 0;
     }
 
     public double getPrecio() {
@@ -66,25 +66,5 @@ public class PagoModel extends Transaccion {
 
     public void setProcesado(boolean procesado) {
         this.procesado = procesado;
-    }
-
-    public boolean validarMetodoPago() {
-        return metodoPago != null && !metodoPago.isEmpty();
-    }
-
-    public void procesarPago() {
-        if (validarTransaccion()) {
-            this.procesado = true;
-            setEstado("COMPLETADO");
-        }
-    }
-
-    public void cancelarPago() {
-        this.procesado = false;
-        setEstado("CANCELADO");
-    }
-
-    public String generarComprobante() {
-        return "Comprobante - Pago: " + idPago + ", Monto: " + precio + ", Metodo: " + metodoPago;
     }
 }

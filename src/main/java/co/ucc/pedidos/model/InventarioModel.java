@@ -21,12 +21,4 @@ public class InventarioModel {
 
     public String getCategoria() { return categoria; }
     public void setCategoria(String categoria) { this.categoria = categoria; }
-
-    public boolean verificarDisponibilidad() {
-        return disponibilidad && cantidad > 0;
-    }
-
-    public void actualizarCantidad(int nuevaCantidad) {
-        this.cantidad = nuevaCantidad;
-    }
 }

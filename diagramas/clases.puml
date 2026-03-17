@@ -2,216 +2,320 @@
 skinparam classAttributeIconSize 0
 hide circle
 
-' Clases Abstractas
-abstract class Transaccion {
-    - idTransaccion: String
-    - fechaTransaccion: Date
-    - monto: double
-    - estado: String
-    ..
-    + validarTransaccion(): boolean {abstract}
-    + getIdTransaccion(): String
-    + setIdTransaccion(String)
-    + getFechaTransaccion(): Date
-    + setFechaTransaccion(Date)
-    + getMonto(): double
-    + setMonto(double)
-    + getEstado(): String
-    + setEstado(String)
+package "model" {
+    
+    abstract class Transaccion {
+        - idTransaccion: String
+        - fechaTransaccion: Date
+        - monto: double
+        - estado: String
+        ..
+        + Transaccion()
+        + Transaccion(String, double)
+        + validarTransaccion(): boolean {abstract}
+        + getIdTransaccion(): String
+        + setIdTransaccion(String)
+        + getFechaTransaccion(): Date
+        + setFechaTransaccion(Date)
+        + getMonto(): double
+        + setMonto(double)
+        + getEstado(): String
+        + setEstado(String)
+    }
+
+    class PagoModel extends Transaccion {
+        - precio: double
+        - metodoPago: String
+        - idPago: String
+        - cliente: ClienteModel
+        - procesado: boolean
+        ..
+        + PagoModel()
+        + PagoModel(double, String, String)
+        + validarTransaccion(): boolean
+        + getPrecio(): double
+        + setPrecio(double)
+        + getMonto(): double
+        + getMetodoPago(): String
+        + setMetodoPago(String)
+        + getIdPago(): String
+        + setIdPago(String)
+        + getCliente(): ClienteModel
+        + setCliente(ClienteModel)
+        + isProcesado(): boolean
+        + setProcesado(boolean)
+    }
+
+    class DevolucionPago extends Transaccion {
+        - motivo: String
+        - pagoOriginal: PagoModel
+        - approved: boolean
+        ..
+        + DevolucionPago()
+        + DevolucionPago(String, double, String, PagoModel)
+        + validarTransaccion(): boolean
+        + getMotivo(): String
+        + setMotivo(String)
+        + getPagoOriginal(): PagoModel
+        + setPagoOriginal(PagoModel)
+        + isApproved(): boolean
+        + setApproved(boolean)
+    }
+
+    class ClienteModel {
+        - idCliente: String
+        - genero: String
+        - nombre: String
+        - correoElectronico: String
+        - direccion: String
+        - pago: PagoModel
+        - pedidos: List<PedidoModel>
+        ..
+        + ClienteModel()
+        + ClienteModel(String, String, String, String, String)
+        + getIdCliente(): String
+        + setIdCliente(String)
+        + getGenero(): String
+        + setGenero(String)
+        + getNombre(): String
+        + setNombre(String)
+        + getCorreoElectronico(): String
+        + setCorreoElectronico(String)
+        + getDireccion(): String
+        + setDireccion(String)
+        + getPago(): PagoModel
+        + setPago(PagoModel)
+        + getPedidos(): List<PedidoModel>
+        + setPedidos(List<PedidoModel>)
+    }
+
+    class PedidoModel {
+        - precio: double
+        - idPedido: String
+        - estado: EstadoModel
+        - categoria: String
+        - lugarEntrega: String
+        - fechaPedido: FechaPedidoModel
+        - cliente: ClienteModel
+        - producto: ProductoModel
+        ..
+        + PedidoModel()
+        + PedidoModel(String, double, String, String)
+        + getPrecio(): double
+        + setPrecio(double)
+        + getIdPedido(): String
+        + setIdPedido(String)
+        + getEstado(): EstadoModel
+        + setEstado(EstadoModel)
+        + getCategoria(): String
+        + setCategoria(String)
+        + getLugarEntrega(): String
+        + setLugarEntrega(String)
+        + getFechaPedido(): FechaPedidoModel
+        + setFechaPedido(FechaPedidoModel)
+        + getCliente(): ClienteModel
+        + setCliente(ClienteModel)
+        + getProducto(): ProductoModel
+        + setProducto(ProductoModel)
+    }
+
+    class ProductoModel {
+        - idProducto: String
+        - cantidad: int
+        - resena: String
+        - inventario: InventarioModel
+        - categoria: CategoriaModel
+        - pedido: PedidoModel
+        ..
+        + ProductoModel()
+        + ProductoModel(String, int, String)
+        + getIdProducto(): String
+        + setIdProducto(String)
+        + getCantidad(): int
+        + setCantidad(int)
+        + getResena(): String
+        + setResena(String)
+        + getInventario(): InventarioModel
+        + setInventario(InventarioModel)
+        + getCategoria(): CategoriaModel
+        + setCategoria(CategoriaModel)
+        + getPedido(): PedidoModel
+        + setPedido(PedidoModel)
+    }
+
+    class EstadoModel {
+        - creado: boolean
+        - enviado: boolean
+        - entregado: boolean
+        - cancelado: boolean
+        - pedido: PedidoModel
+        ..
+        + EstadoModel()
+        + isCreado(): boolean
+        + setCreado(boolean)
+        + isEnviado(): boolean
+        + setEnviado(boolean)
+        + isEntregado(): boolean
+        + setEntregado(boolean)
+        + isCancelado(): boolean
+        + setCancelado(boolean)
+        + getPedido(): PedidoModel
+        + setPedido(PedidoModel)
+    }
+
+    class FechaPedidoModel {
+        - fechaPedir: Date
+        - fechaRecibir: Date
+        - fechaEstimada: Date
+        - pedido: PedidoModel
+        ..
+        + FechaPedidoModel()
+        + FechaPedidoModel(Date, Date, Date)
+        + getFechaPedir(): Date
+        + setFechaPedir(Date)
+        + getFechaRecibir(): Date
+        + setFechaRecibir(Date)
+        + getFechaEstimada(): Date
+        + setFechaEstimada(Date)
+        + getPedido(): PedidoModel
+        + setPedido(PedidoModel)
+    }
+
+    class InventarioModel {
+        - cantidad: int
+        - disponibilidad: boolean
+        - categoria: String
+        ..
+        + InventarioModel()
+        + InventarioModel(int, boolean, String)
+        + getCantidad(): int
+        + setCantidad(int)
+        + isDisponibilidad(): boolean
+        + setDisponibilidad(boolean)
+        + getCategoria(): String
+        + setCategoria(String)
+    }
+
+    class CategoriaModel {
+        - comida: boolean
+        - ropa: boolean
+        - electrodomestico: boolean
+        - etc: String
+        - producto: ProductoModel
+        ..
+        + CategoriaModel()
+        + CategoriaModel(boolean, boolean, boolean, String)
+        + isComida(): boolean
+        + setComida(boolean)
+        + isRopa(): boolean
+        + setRopa(boolean)
+        + isElectrodomestico(): boolean
+        + setElectrodomestico(boolean)
+        + getEtc(): String
+        + setEtc(String)
+        + getProducto(): ProductoModel
+        + setProducto(ProductoModel)
+    }
 }
 
-' Transacciones
-class PagoModel extends Transaccion {
-    - precio: double
-    - metodoPago: String
-    - idPago: String
-    - cliente: ClienteModel
-    - procesado: boolean
-    ..
-    + PagoModel()
-    + PagoModel(double, String, String)
-    + validarTransaccion(): boolean
-    + getPrecio(): double
-    + setPrecio(double)
-    + getMonto(): double
-    + getMetodoPago(): String
-    + setMetodoPago(String)
-    + getIdPago(): String
-    + setIdPago(String)
-    + getCliente(): ClienteModel
-    + setCliente(ClienteModel)
-    + isProcesado(): boolean
-    + setProcesado(boolean)
-    + validarMetodoPago(): boolean
-    + procesarPago()
-    + cancelarPago()
-    + generarComprobante(): String
+package "service" {
+    
+    class PedidoService {
+        - calculadora: CalculadoraPedidoService
+        ..
+        + PedidoService(CalculadoraPedidoService)
+        + findAll(): List<PedidoModel>
+        + findById(String): PedidoModel
+        + save(PedidoModel): PedidoModel
+        + delete(String)
+        + actualizarEstado(String, EstadoModel): PedidoModel
+        + calcularTotalPedido(PedidoModel): double
+        + crearPedido(PedidoModel)
+        + cancelarPedido(PedidoModel)
+        + cambiarEstado(PedidoModel, EstadoModel)
+        + validarCategoria(CategoriaModel): boolean
+        + listarCategorias(CategoriaModel): String[]
+    }
+
+    class CalculadoraPedidoService {
+        ..
+        + calcularTotal(ProductoModel): double
+        + calcularImpuesto(double): double
+        + calcularTotalConImpuesto(double): double
+    }
+
+    class PagoService {
+        - listaPagos: List<PagoModel>
+        ..
+        + registrarPago(PagoModel): PagoModel
+        + listarPagos(): List<PagoModel>
+        + buscarPorId(String): PagoModel
+        + validarMetodoPago(PagoModel): boolean
+        + procesarPago(PagoModel)
+        + cancelarPago(PagoModel)
+        + generarComprobante(PagoModel): String
+        + procesarDevolucion(DevolucionPago): boolean
+    }
+    
+    class InventarioService {
+        ..
+        + verificarDisponibilidad(InventarioModel): boolean
+        + actualizarCantidad(InventarioModel, int)
+    }
+    
+    class FechaPedidoService {
+        ..
+        + calcularFechaEstimada(FechaPedidoModel): Date
+        + actualizarFechaRecibo(FechaPedidoModel, Date)
+        + verificarRetrasoPedido(FechaPedidoModel): boolean
+    }
 }
 
-class DevolucionPago extends Transaccion {
-    - motivo: String
-    - pagoOriginal: PagoModel
-    - approved: boolean
-    ..
-    + DevolucionPago()
-    + DevolucionPago(String, double, String, PagoModel)
-    + validarTransaccion(): boolean
-    + procesarDevolucion(): boolean
-    + getMotivo(): String
-    + setMotivo(String)
-    + getPagoOriginal(): PagoModel
-    + setPagoOriginal(PagoModel)
-    + isApproved(): boolean
-    + setApproved(boolean)
+package "controller" {
+    class PedidoController {
+        - pedidoService: PedidoService
+        ..
+        + PedidoController(PedidoService)
+        + listarPedidos(): List<PedidoModel>
+        + obtenerPedido(String): PedidoModel
+        + crearPedido(PedidoModel): PedidoModel
+        + eliminarPedido(String)
+    }
+
+    class PagoController {
+        - pagoService: PagoService
+        ..
+        + PagoController(PagoService)
+        + registrarPago(PagoModel): PagoModel
+        + listarPagos(): List<PagoModel>
+        + obtenerPago(String): PagoModel
+    }
 }
 
-' Modelos principales
-class ClienteModel {
-    - idCliente: String
-    - genero: String
-    - nombre: String
-    - correoElectronico: String
-    - direccion: String
-    - pago: PagoModel
-    - pedidos: List<PedidoModel>
-    ..
-    + getIdCliente(): String
-    + setIdCliente(String)
-    + getGenero(): String
-    + setGenero(String)
-    + getNombre(): String
-    + setNombre(String)
-    + getCorreoElectronico(): String
-    + setCorreoElectronico(String)
-    + getDireccion(): String
-    + setDireccion(String)
-    + getPago(): PagoModel
-    + setPago(PagoModel)
-    + getPedidos(): List<PedidoModel>
-    + setPedidos(List<PedidoModel>)
+package "exception" {
+    class GlobalExceptionHandler {
+        ..
+        + handleMontoInvalido(MontoInvalidoException): ResponseEntity
+        + handlePagoNoEncontrado(PagoNoEncontradoException): ResponseEntity
+        + handleGeneral(Exception): ResponseEntity
+    }
+
+    class MontoInvalidoException extends RuntimeException {
+        + MontoInvalidoException(String)
+    }
+
+    class PagoNoEncontradoException extends RuntimeException {
+        + PagoNoEncontradoException(String)
+    }
 }
 
-class PedidoModel {
-    - precio: double
-    - idPedido: String
-    - estado: EstadoModel
-    - categoria: String
-    - lugarEntrega: String
-    - fechaPedido: FechaPedidoModel
-    - producto: ProductoModel
-    - clientes: List<ClienteModel>
-    ..
-    + getPrecio(): double
-    + setPrecio(double)
-    + getIdPedido(): String
-    + setIdPedido(String)
-    + getEstado(): EstadoModel
-    + setEstado(EstadoModel)
-    + getCategoria(): String
-    + setCategoria(String)
-    + getLugarEntrega(): String
-    + setLugarEntrega(String)
-    + getFechaPedido(): FechaPedidoModel
-    + setFechaPedido(FechaPedidoModel)
-    + getProducto(): ProductoModel
-    + setProducto(ProductoModel)
-    + getClientes(): List<ClienteModel>
-    + setClientes(List<ClienteModel>)
-}
+' Relaciones de Herencia
+PagoModel -up-> Transaccion
+DevolucionPago -up-> Transaccion
+MontoInvalidoException -up-> RuntimeException
+PagoNoEncontradoException -up-> RuntimeException
 
-class ProductoModel {
-    - idProducto: String
-    - cantidad: int
-    - resena: String
-    - inventario: InventarioModel
-    - categoria: CategoriaModel
-    - pedido: PedidoModel
-    ..
-    + getIdProducto(): String
-    + setIdProducto(String)
-    + getCantidad(): int
-    + setCantidad(int)
-    + getResena(): String
-    + setResena(String)
-    + getInventario(): InventarioModel
-    + setInventario(InventarioModel)
-    + getCategoria(): CategoriaModel
-    + setCategoria(CategoriaModel)
-    + getPedido(): PedidoModel
-    + setPedido(PedidoModel)
-}
-
-class EstadoModel {
-    - creado: boolean
-    - enviado: boolean
-    - entregado: boolean
-    - cancelado: boolean
-    - pedido: PedidoModel
-    ..
-    + isCreado(): boolean
-    + setCreado(boolean)
-    + isEnviado(): boolean
-    + setEnviado(boolean)
-    + isEntregado(): boolean
-    + setEntregado(boolean)
-    + isCancelado(): boolean
-    + setCancelado(boolean)
-    + getPedido(): PedidoModel
-    + setPedido(PedidoModel)
-}
-
-class FechaPedidoModel {
-    - fechaPedir: Date
-    - fechaRecibir: Date
-    - fechaEstimada: Date
-    - pedido: PedidoModel
-    ..
-    + getFechaPedir(): Date
-    + setFechaPedir(Date)
-    + getFechaRecibir(): Date
-    + setFechaRecibir(Date)
-    + getFechaEstimada(): Date
-    + setFechaEstimada(Date)
-    + getPedido(): PedidoModel
-    + setPedido(PedidoModel)
-}
-
-class InventarioModel {
-    - cantidad: int
-    - disponibilidad: boolean
-    - categoria: String
-    - productos: List<ProductoModel>
-    ..
-    + getCantidad(): int
-    + setCantidad(int)
-    + isDisponibilidad(): boolean
-    + setDisponibilidad(boolean)
-    + getCategoria(): String
-    + setCategoria(String)
-    + getProductos(): List<ProductoModel>
-    + setProductos(List<ProductoModel>)
-}
-
-class CategoriaModel {
-    - comida: boolean
-    - ropa: boolean
-    - electrodomestico: boolean
-    - etc: String
-    - producto: ProductoModel
-    ..
-    + isComida(): boolean
-    + setComida(boolean)
-    + isRopa(): boolean
-    + setRopa(boolean)
-    + isElectrodomestico(): boolean
-    + setElectrodomestico(boolean)
-    + getEtc(): String
-    + setEtc(String)
-    + getProducto(): ProductoModel
-    + setProducto(ProductoModel)
-}
-
-' Relaciones
+' Relaciones de Asociacion
 DevolucionPago --> PagoModel : pagoOriginal
 
 ClienteModel --> PedidoModel : pedidos
@@ -220,7 +324,7 @@ ClienteModel --> PagoModel : pago
 PedidoModel --> EstadoModel : estado
 PedidoModel --> FechaPedidoModel : fechaPedido
 PedidoModel --> ProductoModel : producto
-PedidoModel --> ClienteModel : clientes
+PedidoModel --> ClienteModel : cliente
 
 ProductoModel --> InventarioModel : inventario
 ProductoModel --> CategoriaModel : categoria
@@ -228,7 +332,13 @@ ProductoModel --> PedidoModel : pedido
 
 FechaPedidoModel --> PedidoModel : pedido
 EstadoModel --> PedidoModel : pedido
-InventarioModel --> ProductoModel : productos
 CategoriaModel --> ProductoModel : producto
+
+' Relaciones de Dependencia
+PedidoService .right.> CalculadoraPedidoService : <<uses>>
+PedidoService .right.> InventarioService : <<uses>>
+PedidoService .right.> FechaPedidoService : <<uses>>
+PedidoController .right.> PedidoService : <<uses>>
+PagoController .right.> PagoService : <<uses>>
 
 @enduml

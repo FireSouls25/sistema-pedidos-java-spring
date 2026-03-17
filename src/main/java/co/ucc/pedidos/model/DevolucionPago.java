@@ -30,16 +30,6 @@ public class DevolucionPago extends Transaccion {
         return true;
     }
 
-    public boolean procesarDevolucion() {
-        if (validarTransaccion()) {
-            this.approved = true;
-            setEstado("COMPLETADA");
-            return true;
-        }
-        setEstado("RECHAZADA");
-        return false;
-    }
-
     public String getMotivo() {
         return motivo;
     }

@@ -30,12 +30,4 @@ public class CategoriaModel {
 
     public ProductoModel getProducto() { return producto; }
     public void setProducto(ProductoModel producto) { this.producto = producto; }
-
-    public boolean validarCategoria() {
-        return comida || ropa || electrodomestico || (etc != null && !etc.isEmpty());
-    }
-
-    public String[] listarCategorias() {
-        return new String[]{"comida", "ropa", "electrodomestico", etc};
-    }
 }

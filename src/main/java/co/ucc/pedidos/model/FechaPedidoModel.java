@@ -27,19 +27,4 @@ public class FechaPedidoModel {
 
     public PedidoModel getPedido() { return pedido; }
     public void setPedido(PedidoModel pedido) { this.pedido = pedido; }
-
-    public Date calcularFechaEstimada() {
-        return fechaEstimada;
-    }
-
-    public void actualizarFechaRecibo(Date fechaRecibir) {
-        this.fechaRecibir = fechaRecibir;
-    }
-
-    public boolean verificarRetrasoPedido() {
-        if (fechaRecibir != null && fechaEstimada != null) {
-            return fechaRecibir.after(fechaEstimada);
-        }
-        return false;
-    }
 }

@@ -47,16 +47,4 @@ public class PedidoModel {
 
     public ProductoModel getProducto() { return producto; }
     public void setProducto(ProductoModel producto) { this.producto = producto; }
-
-    public void crearPedido() {
-        this.estado.setCreado(true);
-    }
-
-    public void cancelarPedido() {
-        this.estado.setCancelado(true);
-    }
-
-    public void cambiarEstado(EstadoModel nuevoEstado) {
-        this.estado = nuevoEstado;
-    }
 }
