@@ -14,43 +14,18 @@ public class EstadoModel {
         this.cancelado = false;
     }
 
-    public boolean isCreado() {
-        return creado;
-    }
+    public boolean isCreado() { return creado; }
+    public void setCreado(boolean creado) { this.creado = creado; }
 
-    public void setCreado(boolean creado) {
-        this.creado = creado;
-    }
+    public boolean isEnviado() { return enviado; }
+    public void setEnviado(boolean enviado) { this.enviado = enviado; }
 
-    public boolean isEnviado() {
-        return enviado;
-    }
+    public boolean isEntregado() { return entregado; }
+    public void setEntregado(boolean entregado) { this.entregado = entregado; }
 
-    public void setEnviado(boolean enviado) {
-        this.enviado = enviado;
-    }
+    public boolean isCancelado() { return cancelado; }
+    public void setCancelado(boolean cancelado) { this.cancelado = cancelado; }
 
-    public boolean isEntregado() {
-        return entregado;
-    }
-
-    public void setEntregado(boolean entregado) {
-        this.entregado = entregado;
-    }
-
-    public boolean isCancelado() {
-        return cancelado;
-    }
-
-    public void setCancelado(boolean cancelado) {
-        this.cancelado = cancelado;
-    }
-
-    public PedidoModel getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(PedidoModel pedido) {
-        this.pedido = pedido;
-    }
+    public PedidoModel getPedido() { return pedido; }
+    public void setPedido(PedidoModel pedido) { this.pedido = pedido; }
 }

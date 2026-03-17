@@ -16,35 +16,30 @@ public class FechaPedidoModel {
         this.fechaEstimada = fechaEstimada;
     }
 
-    public Date getFechaPedir() {
-        return fechaPedir;
-    }
+    public Date getFechaPedir() { return fechaPedir; }
+    public void setFechaPedir(Date fechaPedir) { this.fechaPedir = fechaPedir; }
 
-    public void setFechaPedir(Date fechaPedir) {
-        this.fechaPedir = fechaPedir;
-    }
+    public Date getFechaRecibir() { return fechaRecibir; }
+    public void setFechaRecibir(Date fechaRecibir) { this.fechaRecibir = fechaRecibir; }
 
-    public Date getFechaRecibir() {
-        return fechaRecibir;
-    }
+    public Date getFechaEstimada() { return fechaEstimada; }
+    public void setFechaEstimada(Date fechaEstimada) { this.fechaEstimada = fechaEstimada; }
 
-    public void setFechaRecibir(Date fechaRecibir) {
-        this.fechaRecibir = fechaRecibir;
-    }
+    public PedidoModel getPedido() { return pedido; }
+    public void setPedido(PedidoModel pedido) { this.pedido = pedido; }
 
-    public Date getFechaEstimada() {
+    public Date calcularFechaEstimada() {
         return fechaEstimada;
     }
 
-    public void setFechaEstimada(Date fechaEstimada) {
-        this.fechaEstimada = fechaEstimada;
+    public void actualizarFechaRecibo(Date fechaRecibir) {
+        this.fechaRecibir = fechaRecibir;
     }
 
-    public PedidoModel getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(PedidoModel pedido) {
-        this.pedido = pedido;
+    public boolean verificarRetrasoPedido() {
+        if (fechaRecibir != null && fechaEstimada != null) {
+            return fechaRecibir.after(fechaEstimada);
+        }
+        return false;
     }
 }

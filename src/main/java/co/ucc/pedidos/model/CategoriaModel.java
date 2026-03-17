@@ -16,43 +16,26 @@ public class CategoriaModel {
         this.etc = etc;
     }
 
-    public boolean isComida() {
-        return comida;
+    public boolean isComida() { return comida; }
+    public void setComida(boolean comida) { this.comida = comida; }
+
+    public boolean isRopa() { return ropa; }
+    public void setRopa(boolean ropa) { this.ropa = ropa; }
+
+    public boolean isElectrodomestico() { return electrodomestico; }
+    public void setElectrodomestico(boolean electrodomestico) { this.electrodomestico = electrodomestico; }
+
+    public String getEtc() { return etc; }
+    public void setEtc(String etc) { this.etc = etc; }
+
+    public ProductoModel getProducto() { return producto; }
+    public void setProducto(ProductoModel producto) { this.producto = producto; }
+
+    public boolean validarCategoria() {
+        return comida || ropa || electrodomestico || (etc != null && !etc.isEmpty());
     }
 
-    public void setComida(boolean comida) {
-        this.comida = comida;
-    }
-
-    public boolean isRopa() {
-        return ropa;
-    }
-
-    public void setRopa(boolean ropa) {
-        this.ropa = ropa;
-    }
-
-    public boolean isElectrodomestico() {
-        return electrodomestico;
-    }
-
-    public void setElectrodomestico(boolean electrodomestico) {
-        this.electrodomestico = electrodomestico;
-    }
-
-    public String getEtc() {
-        return etc;
-    }
-
-    public void setEtc(String etc) {
-        this.etc = etc;
-    }
-
-    public ProductoModel getProducto() {
-        return producto;
-    }
-
-    public void setProducto(ProductoModel producto) {
-        this.producto = producto;
+    public String[] listarCategorias() {
+        return new String[]{"comida", "ropa", "electrodomestico", etc};
     }
 }

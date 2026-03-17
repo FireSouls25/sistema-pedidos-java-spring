@@ -16,51 +16,21 @@ public class ProductoModel {
         this.resena = resena;
     }
 
-    public String getIdProducto() {
-        return idProducto;
-    }
+    public String getIdProducto() { return idProducto; }
+    public void setIdProducto(String idProducto) { this.idProducto = idProducto; }
 
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
-    }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public int getCantidad() {
-        return cantidad;
-    }
+    public String getResena() { return resena; }
+    public void setResena(String resena) { this.resena = resena; }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
+    public InventarioModel getInventario() { return inventario; }
+    public void setInventario(InventarioModel inventario) { this.inventario = inventario; }
 
-    public String getResena() {
-        return resena;
-    }
+    public CategoriaModel getCategoria() { return categoria; }
+    public void setCategoria(CategoriaModel categoria) { this.categoria = categoria; }
 
-    public void setResena(String resena) {
-        this.resena = resena;
-    }
-
-    public InventarioModel getInventario() {
-        return inventario;
-    }
-
-    public void setInventario(InventarioModel inventario) {
-        this.inventario = inventario;
-    }
-
-    public CategoriaModel getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(CategoriaModel categoria) {
-        this.categoria = categoria;
-    }
-
-    public PedidoModel getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(PedidoModel pedido) {
-        this.pedido = pedido;
-    }
+    public PedidoModel getPedido() { return pedido; }
+    public void setPedido(PedidoModel pedido) { this.pedido = pedido; }
 }
