@@ -8,10 +8,10 @@ import java.util.List;
 @Service
 public class PedidoService {
     
-    private final CalculadoraPedido calculadora;
+    private final CalculadoraPedidoService calculadora;
 
-    public PedidoService() {
-        this.calculadora = new CalculadoraPedido();
+    public PedidoService(CalculadoraPedidoService calculadora) {
+        this.calculadora = calculadora;
     }
 
     public List<PedidoModel> findAll() {

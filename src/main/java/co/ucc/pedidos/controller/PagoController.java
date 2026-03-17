@@ -1,6 +1,6 @@
 package co.ucc.pedidos.controller;
 
-import co.ucc.pedidos.model.Pago;
+import co.ucc.pedidos.model.PagoModel;
 import co.ucc.pedidos.service.PagoService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,17 +16,17 @@ public class PagoController {
     }
 
     @PostMapping
-    public Pago registrarPago(@RequestBody Pago pago) {
+    public PagoModel registrarPago(@RequestBody PagoModel pago) {
         return pagoService.registrarPago(pago);
     }
 
     @GetMapping
-    public List<Pago> listarPagos() {
+    public List<PagoModel> listarPagos() {
         return pagoService.listarPagos();
     }
 
     @GetMapping("/{id}")
-    public Pago obtenerPago(@PathVariable String id) {
+    public PagoModel obtenerPago(@PathVariable String id) {
         return pagoService.buscarPorId(id);
     }
 }
