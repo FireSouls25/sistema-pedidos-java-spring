@@ -175,11 +175,11 @@ class PagoServiceTest {
     @Test
     void testProcesarDevolucion_MontoMayorQueOriginal() {
         PagoModel pagoOriginal = DatosPrueba.crearPago();
-        pagoOriginal.setPrecio(50);
+        pagoOriginal.setPrecio(50.0);
         
         DevolucionPago devolucion = new DevolucionPago();
         devolucion.setIdTransaccion("DEV001");
-        devolucion.setMonto(100);
+        devolucion.setMonto(100.0);
         devolucion.setPagoOriginal(pagoOriginal);
         
         boolean resultado = pagoService.procesarDevolucion(devolucion);
@@ -192,7 +192,7 @@ class PagoServiceTest {
     void testProcesarDevolucion_SinPagoOriginal() {
         DevolucionPago devolucion = new DevolucionPago();
         devolucion.setIdTransaccion("DEV001");
-        devolucion.setMonto(100);
+        devolucion.setMonto(100.0);
         devolucion.setPagoOriginal(null);
         
         boolean resultado = pagoService.procesarDevolucion(devolucion);
