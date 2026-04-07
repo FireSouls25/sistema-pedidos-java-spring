@@ -32,11 +32,11 @@ class PagoServiceTest {
 
     @Test
     void testRegistrarPago_DeberiaRegistrarExitosamente() {
-        PagoModel resultado = pagoService.registrarPago(pago);
+        var resultado = pagoService.registrarPago(pago);
         
-        assertNotNull(resultado);
-        assertTrue(pago.isProcesado());
-        assertEquals("COMPLETADO", pago.getEstado());
+        assertTrue(resultado.isPresent());
+        assertTrue(resultado.get().isProcesado());
+        assertEquals("COMPLETADO", resultado.get().getEstado());
     }
 
     @Test
@@ -83,10 +83,10 @@ class PagoServiceTest {
     void testBuscarPorId_Existente() {
         pagoService.registrarPago(pago);
         
-        PagoModel resultado = pagoService.buscarPorId("PAG001");
+        var resultado = pagoService.buscarPorId("PAG001");
         
-        assertNotNull(resultado);
-        assertEquals("PAG001", resultado.getIdPago());
+        assertTrue(resultado.isPresent());
+        assertEquals("PAG001", resultado.get().getIdPago());
     }
 
     @Test
@@ -144,10 +144,11 @@ class PagoServiceTest {
     void testCancelarPago() {
         pagoService.registrarPago(pago);
         
-        pagoService.cancelarPago(pago);
+        var resultado = pagoService.cancelarPago(pago.getIdPago());
         
-        assertFalse(pago.isProcesado());
-        assertEquals("CANCELADO", pago.getEstado());
+        assertTrue(resultado.isPresent());
+        assertFalse(resultado.get().isProcesado());
+        assertEquals("CANCELADO", resultado.get().getEstado());
     }
 
     @Test

@@ -19,13 +19,13 @@ public class ClienteService {
     @Transactional
     public ClienteModel registrarCliente(ClienteModel cliente) {
         if (cliente == null) {
-            throw new IllegalArgumentException("El cliente no puede ser nulo");
+            throw new co.ucc.pedidos.exception.ResourceNotFoundException("El cliente no puede ser nulo");
         }
         if (clienteRepository.existsByIdCliente(cliente.getIdCliente())) {
-            throw new IllegalArgumentException("Ya existe un cliente con el ID: " + cliente.getIdCliente());
+            throw new co.ucc.pedidos.exception.ResourceAlreadyExistsException("Ya existe un cliente con el ID: " + cliente.getIdCliente());
         }
         if (clienteRepository.existsByCorreoElectronico(cliente.getCorreoElectronico())) {
-            throw new IllegalArgumentException("Ya existe un cliente con el correo: " + cliente.getCorreoElectronico());
+            throw new co.ucc.pedidos.exception.ResourceAlreadyExistsException("Ya existe un cliente con el correo: " + cliente.getCorreoElectronico());
         }
         return clienteRepository.save(cliente);
     }
@@ -49,7 +49,7 @@ public class ClienteService {
     @Transactional
     public ClienteModel actualizarCliente(String idCliente, ClienteModel clienteActualizado) {
         ClienteModel clienteExistente = clienteRepository.findByIdCliente(idCliente)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + idCliente));
+                .orElseThrow(() -> new co.ucc.pedidos.exception.ResourceNotFoundException("Cliente no encontrado con ID: " + idCliente));
 
         if (clienteActualizado.getGenero() != null) {
             clienteExistente.setGenero(clienteActualizado.getGenero());
@@ -70,7 +70,7 @@ public class ClienteService {
     @Transactional
     public void eliminarCliente(String idCliente) {
         if (!clienteRepository.existsByIdCliente(idCliente)) {
-            throw new IllegalArgumentException("Cliente no encontrado con ID: " + idCliente);
+            throw new co.ucc.pedidos.exception.ResourceNotFoundException("Cliente no encontrado con ID: " + idCliente);
         }
         clienteRepository.deleteByIdCliente(idCliente);
     }

@@ -44,18 +44,18 @@ class PedidoServiceTest {
 
     @Test
     void testFindById_DeberiaRetornarNull() {
-        PedidoModel resultado = pedidoService.findById("PED001");
-        assertNull(resultado);
+        var resultado = pedidoService.findById("PED001");
+        assertTrue(resultado.isEmpty());
     }
 
     @Test
     void testSave_ConProducto_DeberiaCalcularTotal() {
         when(calculadora.calcularTotal(any(ProductoModel.class))).thenReturn(500.0);
         
-        PedidoModel resultado = pedidoService.save(pedido);
+        var resultado = pedidoService.save(pedido);
         
-        assertNotNull(resultado);
-        assertEquals(500.0, resultado.getPrecio());
+        assertTrue(resultado.isPresent());
+        assertEquals(500.0, resultado.get().getPrecio());
         verify(calculadora).calcularTotal(any(ProductoModel.class));
     }
 
@@ -63,9 +63,9 @@ class PedidoServiceTest {
     void testSave_SinProducto_NoDebeCalcularTotal() {
         pedido.setProducto(null);
         
-        PedidoModel resultado = pedidoService.save(pedido);
+        var resultado = pedidoService.save(pedido);
         
-        assertNotNull(resultado);
+        assertTrue(resultado.isPresent());
         verify(calculadora, never()).calcularTotal(any());
     }
 
@@ -96,9 +96,10 @@ class PedidoServiceTest {
 
     @Test
     void testCancelarPedido_DeberiaSetearEstadoCancelado() {
-        pedidoService.cancelarPedido(pedido);
+        var resultado = pedidoService.cancelarPedido(pedido.getIdPedido());
         
-        assertTrue(pedido.getEstado().isCancelado());
+        assertTrue(resultado.isPresent());
+        assertTrue(resultado.get().getEstado().isCancelado());
     }
 
     @Test
@@ -106,9 +107,10 @@ class PedidoServiceTest {
         EstadoModel nuevoEstado = new EstadoModel();
         nuevoEstado.setEnviado(true);
         
-        pedidoService.cambiarEstado(pedido, nuevoEstado);
+        var resultado = pedidoService.cambiarEstado(pedido.getIdPedido(), nuevoEstado);
         
-        assertTrue(pedido.getEstado().isEnviado());
+        assertTrue(resultado.isPresent());
+        assertTrue(resultado.get().getEstado().isEnviado());
     }
 
     @Test
