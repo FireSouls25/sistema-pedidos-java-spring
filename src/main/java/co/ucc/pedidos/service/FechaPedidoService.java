@@ -2,16 +2,16 @@ package co.ucc.pedidos.service;
 
 import co.ucc.pedidos.model.FechaPedidoModel;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Service
 public class FechaPedidoService {
 
-    public Date calcularFechaEstimada(FechaPedidoModel fechaPedido) {
+    public LocalDateTime calcularFechaEstimada(FechaPedidoModel fechaPedido) {
         return fechaPedido != null ? fechaPedido.getFechaEstimada() : null;
     }
 
-    public void actualizarFechaRecibo(FechaPedidoModel fechaPedido, Date fechaRecibir) {
+    public void actualizarFechaRecibo(FechaPedidoModel fechaPedido, LocalDateTime fechaRecibir) {
         if (fechaPedido != null) {
             fechaPedido.setFechaRecibir(fechaRecibir);
         }
@@ -21,8 +21,8 @@ public class FechaPedidoService {
         if (fechaPedido == null) {
             return false;
         }
-        Date fechaRecibir = fechaPedido.getFechaRecibir();
-        Date fechaEstimada = fechaPedido.getFechaEstimada();
-        return fechaRecibir != null && fechaEstimada != null && fechaRecibir.after(fechaEstimada);
+        LocalDateTime fechaRecibir = fechaPedido.getFechaRecibir();
+        LocalDateTime fechaEstimada = fechaPedido.getFechaEstimada();
+        return fechaRecibir != null && fechaEstimada != null && fechaRecibir.isAfter(fechaEstimada);
     }
 }

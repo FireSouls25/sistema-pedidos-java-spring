@@ -2,13 +2,33 @@ package co.ucc.pedidos.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+
+@Entity
+@Table(name = "cliente")
 public class ClienteModel {
+    @Id
+    @Column(name = "id_cliente", length = 50)
     private String idCliente;
+    @Column(name = "genero", length = 20)
     private String genero;
+    @Column(name = "nombre", length = 100)
     private String nombre;
+    @Column(name = "correo_electronico", length = 100)
     private String correoElectronico;
+    @Column(name = "direccion", length = 255)
     private String direccion;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pago")
     private PagoModel pago;
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<PedidoModel> pedidos;
 
     public ClienteModel() {}

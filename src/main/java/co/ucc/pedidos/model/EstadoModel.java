@@ -1,10 +1,28 @@
 package co.ucc.pedidos.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+
+@Entity
+@Table(name = "estado")
 public class EstadoModel {
+    @Id
+    @Column(name = "id_estado")
+    private String idEstado;
+    @Column(name = "creado")
     private boolean creado;
+    @Column(name = "enviado")
     private boolean enviado;
+    @Column(name = "entregado")
     private boolean entregado;
+    @Column(name = "cancelado")
     private boolean cancelado;
+    @OneToOne(mappedBy = "estado", fetch = FetchType.LAZY)
     private PedidoModel pedido;
 
     public EstadoModel() {
@@ -28,4 +46,7 @@ public class EstadoModel {
 
     public PedidoModel getPedido() { return pedido; }
     public void setPedido(PedidoModel pedido) { this.pedido = pedido; }
+
+    public String getIdEstado() { return idEstado; }
+    public void setIdEstado(String idEstado) { this.idEstado = idEstado; }
 }

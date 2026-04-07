@@ -1,20 +1,31 @@
 package co.ucc.pedidos.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+
+@Entity
+@Table(name = "producto")
 public class ProductoModel {
+    @Id
+    @Column(name = "id_producto")
     private String idProducto;
+    @Column(name = "cantidad")
     private int cantidad;
+    @Column(name = "resena", length = 500)
     private String resena;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_inventario")
     private InventarioModel inventario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categoria")
     private CategoriaModel categoria;
-    private PedidoModel pedido;
 
     public ProductoModel() {}
-
-    public ProductoModel(String idProducto, int cantidad, String resena) {
-        this.idProducto = idProducto;
-        this.cantidad = cantidad;
-        this.resena = resena;
-    }
 
     public String getIdProducto() { return idProducto; }
     public void setIdProducto(String idProducto) { this.idProducto = idProducto; }
@@ -30,7 +41,4 @@ public class ProductoModel {
 
     public CategoriaModel getCategoria() { return categoria; }
     public void setCategoria(CategoriaModel categoria) { this.categoria = categoria; }
-
-    public PedidoModel getPedido() { return pedido; }
-    public void setPedido(PedidoModel pedido) { this.pedido = pedido; }
 }

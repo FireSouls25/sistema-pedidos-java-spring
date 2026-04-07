@@ -2,6 +2,7 @@ package co.ucc.pedidos.controller;
 
 import co.ucc.pedidos.model.PedidoModel;
 import co.ucc.pedidos.service.PedidoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -21,17 +22,23 @@ public class PedidoController {
     }
 
     @GetMapping("/{id}")
-    public PedidoModel obtenerPedido(@PathVariable String id) {
-        return pedidoService.findById(id);
+    public ResponseEntity<PedidoModel> obtenerPedido(@PathVariable String id) {
+        return pedidoService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public PedidoModel crearPedido(@RequestBody PedidoModel pedido) {
-        return pedidoService.save(pedido);
+    public ResponseEntity<PedidoModel> crearPedido(@RequestBody PedidoModel pedido) {
+        return pedidoService.save(pedido)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarPedido(@PathVariable String id) {
-        pedidoService.delete(id);
+    public ResponseEntity<Void> eliminarPedido(@PathVariable String id) {
+        return pedidoService.delete(id)
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
     }
 }

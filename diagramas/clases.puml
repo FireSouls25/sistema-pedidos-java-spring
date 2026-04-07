@@ -44,6 +44,10 @@ package "model" {
         + setCliente(ClienteModel)
         + isProcesado(): boolean
         + setProcesado(boolean)
+        + validarMetodoPago(): boolean
+        + procesarPago()
+        + cancelarPago()
+        + generarComprobante(): String
     }
 
     class DevolucionPago extends Transaccion {
@@ -54,6 +58,7 @@ package "model" {
         + DevolucionPago()
         + DevolucionPago(String, double, String, PagoModel)
         + validarTransaccion(): boolean
+        + procesarDevolucion(): boolean
         + getMotivo(): String
         + setMotivo(String)
         + getPagoOriginal(): PagoModel
@@ -96,8 +101,8 @@ package "model" {
         - categoria: String
         - lugarEntrega: String
         - fechaPedido: FechaPedidoModel
-        - cliente: ClienteModel
         - producto: ProductoModel
+        - clientes: List<ClienteModel>
         ..
         + PedidoModel()
         + PedidoModel(String, double, String, String)
@@ -110,13 +115,13 @@ package "model" {
         + getCategoria(): String
         + setCategoria(String)
         + getLugarEntrega(): String
-        + setLugarEntrega(String)
+        + setLugaEntrega(String)
         + getFechaPedido(): FechaPedidoModel
         + setFechaPedido(FechaPedidoModel)
-        + getCliente(): ClienteModel
-        + setCliente(ClienteModel)
         + getProducto(): ProductoModel
         + setProducto(ProductoModel)
+        + getClientes(): List<ClienteModel>
+        + setClientes(List<ClienteModel>)
     }
 
     class ProductoModel {
@@ -185,6 +190,7 @@ package "model" {
         - cantidad: int
         - disponibilidad: boolean
         - categoria: String
+        - productos: List<ProductoModel>
         ..
         + InventarioModel()
         + InventarioModel(int, boolean, String)
@@ -194,6 +200,8 @@ package "model" {
         + setDisponibilidad(boolean)
         + getCategoria(): String
         + setCategoria(String)
+        + getProductos(): List<ProductoModel>
+        + setProductos(List<ProductoModel>)
     }
 
     class CategoriaModel {
@@ -218,21 +226,66 @@ package "model" {
     }
 }
 
+package "repository" {
+    
+    interface ClienteRepository {
+        + findByIdCliente(String): Optional<ClienteModel>
+        + findByCorreoElectronico(String): Optional<ClienteModel>
+        + findByNombre(String): Optional<ClienteModel>
+        + existsByIdCliente(String): boolean
+        + existsByCorreoElectronico(String): boolean
+        + deleteByIdCliente(String)
+    }
+    
+    interface PedidoRepository {
+        + findByIdPedido(String): Optional<PedidoModel>
+        + findByClienteIdCliente(String): List<PedidoModel>
+        + findByCategoria(String): List<PedidoModel>
+        + existsByIdPedido(String): boolean
+        + deleteByIdPedido(String)
+    }
+    
+    interface PagoRepository {
+        + findByIdPago(String): Optional<PagoModel>
+        + findByClienteIdCliente(String): List<PagoModel>
+        + findByMetodoPago(String): List<PagoModel>
+        + existsByIdPago(String): boolean
+        + deleteByIdPago(String)
+    }
+    
+    interface ProductoRepository {
+        + findByIdProducto(String): Optional<ProductoModel>
+        + findByCategoriaIdCategoria(String): List<ProductoModel>
+        + findByInventarioIdInventario(String): List<ProductoModel>
+        + existsByIdProducto(String): boolean
+        + deleteByIdProducto(String)
+    }
+    
+    interface InventarioRepository {
+        + findByIdInventario(String): Optional<InventarioModel>
+        + findByCategoria(String): List<InventarioModel>
+        + findByDisponibilidad(boolean): List<InventarioModel>
+        + existsByIdInventario(String): boolean
+        + deleteByIdInventario(String)
+    }
+}
+
 package "service" {
     
     class PedidoService {
         - calculadora: CalculadoraPedidoService
+        - pedidoRepository: PedidoRepository
         ..
         + PedidoService(CalculadoraPedidoService)
         + findAll(): List<PedidoModel>
-        + findById(String): PedidoModel
-        + save(PedidoModel): PedidoModel
-        + delete(String)
-        + actualizarEstado(String, EstadoModel): PedidoModel
+        + findById(String): Optional<PedidoModel>
+        + save(PedidoModel): Optional<PedidoModel>
+        + delete(String): boolean
+        + actualizarEstado(String, EstadoModel): Optional<PedidoModel>
         + calcularTotalPedido(PedidoModel): double
-        + crearPedido(PedidoModel)
-        + cancelarPedido(PedidoModel)
-        + cambiarEstado(PedidoModel, EstadoModel)
+        + crearPedido(PedidoModel): Optional<PedidoModel>
+        + cancelarPedido(String): Optional<PedidoModel>
+        + cambiarEstado(String, EstadoModel): Optional<PedidoModel>
         + validarCategoria(CategoriaModel): boolean
         + listarCategorias(CategoriaModel): String[]
     }
@@ -245,29 +298,30 @@ package "service" {
     }
 
     class PagoService {
-        - listaPagos: List<PagoModel>
+        - pagoRepository: PagoRepository
         ..
-        + registrarPago(PagoModel): PagoModel
+        + registrarPago(PagoModel): Optional<PagoModel>
         + listarPagos(): List<PagoModel>
-        + buscarPorId(String): PagoModel
+        + buscarPorId(String): Optional<PagoModel>
         + validarMetodoPago(PagoModel): boolean
         + procesarPago(PagoModel)
-        + cancelarPago(PagoModel)
+        + cancelarPago(String): Optional<PagoModel>
         + generarComprobante(PagoModel): String
         + procesarDevolucion(DevolucionPago): boolean
     }
     
-    class InventarioService {
+    class ClienteService {
+        - clienteRepository: ClienteRepository
         ..
-        + verificarDisponibilidad(InventarioModel): boolean
-        + actualizarCantidad(InventarioModel, int)
-    }
-    
-    class FechaPedidoService {
-        ..
-        + calcularFechaEstimada(FechaPedidoModel): Date
-        + actualizarFechaRecibo(FechaPedidoModel, Date)
-        + verificarRetrasoPedido(FechaPedidoModel): boolean
+        + registrarCliente(ClienteModel): ClienteModel
+        + listarClientes(): List<ClienteModel>
+        + buscarPorId(String): Optional<ClienteModel>
+        + buscarPorCorreo(String): Optional<ClienteModel>
+        + buscarPorNombre(String): Optional<ClienteModel>
+        + actualizarCliente(String, ClienteModel): ClienteModel
+        + eliminarCliente(String)
+        + existePorId(String): boolean
+        + existePorCorreo(String): boolean
     }
 }
 
@@ -277,43 +331,33 @@ package "controller" {
         ..
         + PedidoController(PedidoService)
         + listarPedidos(): List<PedidoModel>
-        + obtenerPedido(String): PedidoModel
-        + crearPedido(PedidoModel): PedidoModel
-        + eliminarPedido(String)
+        + obtenerPedido(String): ResponseEntity<PedidoModel>
+        + crearPedido(PedidoModel): ResponseEntity<PedidoModel>
+        + eliminarPedido(String): ResponseEntity<Void>
     }
 
     class PagoController {
         - pagoService: PagoService
         ..
         + PagoController(PagoService)
-        + registrarPago(PagoModel): PagoModel
+        + registrarPago(PagoModel): ResponseEntity<PagoModel>
         + listarPagos(): List<PagoModel>
-        + obtenerPago(String): PagoModel
+        + obtenerPago(String): ResponseEntity<PagoModel>
     }
-}
-
-package "exception" {
-    class GlobalExceptionHandler {
+    
+    class ClienteController {
+        - clienteService: ClienteService
         ..
-        + handleMontoInvalido(MontoInvalidoException): ResponseEntity
-        + handlePagoNoEncontrado(PagoNoEncontradoException): ResponseEntity
-        + handleGeneral(Exception): ResponseEntity
-    }
-
-    class MontoInvalidoException extends RuntimeException {
-        + MontoInvalidoException(String)
-    }
-
-    class PagoNoEncontradoException extends RuntimeException {
-        + PagoNoEncontradoException(String)
+        + ClienteController(ClienteService)
+        + registrarCliente(ClienteModel): ClienteModel
+        + listarClientes(): List<ClienteModel>
+        + buscarCliente(String): Optional<ClienteModel>
     }
 }
 
 ' Relaciones de Herencia
 PagoModel -up-> Transaccion
 DevolucionPago -up-> Transaccion
-MontoInvalidoException -up-> RuntimeException
-PagoNoEncontradoException -up-> RuntimeException
 
 ' Relaciones de Asociacion
 DevolucionPago --> PagoModel : pagoOriginal
@@ -324,7 +368,7 @@ ClienteModel --> PagoModel : pago
 PedidoModel --> EstadoModel : estado
 PedidoModel --> FechaPedidoModel : fechaPedido
 PedidoModel --> ProductoModel : producto
-PedidoModel --> ClienteModel : cliente
+PedidoModel --> ClienteModel : clientes
 
 ProductoModel --> InventarioModel : inventario
 ProductoModel --> CategoriaModel : categoria
@@ -333,11 +377,13 @@ ProductoModel --> PedidoModel : pedido
 FechaPedidoModel --> PedidoModel : pedido
 EstadoModel --> PedidoModel : pedido
 CategoriaModel --> ProductoModel : producto
+InventarioModel --> ProductoModel : productos
 
 ' Relaciones de Dependencia
 PedidoService .right.> CalculadoraPedidoService : <<uses>>
-PedidoService .right.> InventarioService : <<uses>>
-PedidoService .right.> FechaPedidoService : <<uses>>
+PedidoService .right.> PedidoRepository : <<uses>>
+PagoService .right.> PagoRepository : <<uses>>
+ClienteService .right.> ClienteRepository : <<uses>>
 PedidoController .right.> PedidoService : <<uses>>
 PagoController .right.> PagoService : <<uses>>
 

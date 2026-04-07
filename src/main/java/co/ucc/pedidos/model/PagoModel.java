@@ -1,10 +1,27 @@
 package co.ucc.pedidos.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+
+@Entity
+@Table(name = "pago")
 public class PagoModel extends Transaccion {
-    private double precio;
-    private String metodoPago;
+    @Id
+    @Column(name = "id_pago")
     private String idPago;
+    @Column(name = "precio")
+    private double precio;
+    @Column(name = "metodo_pago", length = 50)
+    private String metodoPago;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
     private ClienteModel cliente;
+    @Column(name = "procesado")
     private boolean procesado;
 
     public PagoModel() {

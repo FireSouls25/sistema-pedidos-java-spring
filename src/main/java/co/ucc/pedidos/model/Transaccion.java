@@ -1,21 +1,30 @@
 package co.ucc.pedidos.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import java.time.LocalDateTime;
+
+@MappedSuperclass
 public abstract class Transaccion {
+    @Column(name = "id_transaccion")
     private String idTransaccion;
-    private Date fechaTransaccion;
+    @Column(name = "fecha_transaccion")
+    private LocalDateTime fechaTransaccion;
+    @Column(name = "monto")
     private double monto;
+    @Column(name = "estado", length = 50)
     private String estado;
 
     public Transaccion() {
-        this.fechaTransaccion = new Date();
+        this.fechaTransaccion = LocalDateTime.now();
     }
 
     public Transaccion(String idTransaccion, double monto) {
         this.idTransaccion = idTransaccion;
         this.monto = monto;
-        this.fechaTransaccion = new Date();
+        this.fechaTransaccion = LocalDateTime.now();
         this.estado = "PENDIENTE";
     }
 
@@ -29,11 +38,11 @@ public abstract class Transaccion {
         this.idTransaccion = idTransaccion;
     }
 
-    public Date getFechaTransaccion() {
+    public LocalDateTime getFechaTransaccion() {
         return fechaTransaccion;
     }
 
-    public void setFechaTransaccion(Date fechaTransaccion) {
+    public void setFechaTransaccion(LocalDateTime fechaTransaccion) {
         this.fechaTransaccion = fechaTransaccion;
     }
 

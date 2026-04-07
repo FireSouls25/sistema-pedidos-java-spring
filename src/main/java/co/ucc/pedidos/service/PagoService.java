@@ -1,41 +1,39 @@
 package co.ucc.pedidos.service;
 
-import co.ucc.pedidos.exception.MontoInvalidoException;
-import co.ucc.pedidos.exception.PagoNoEncontradoException;
 import co.ucc.pedidos.model.DevolucionPago;
 import co.ucc.pedidos.model.PagoModel;
+import co.ucc.pedidos.repository.PagoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PagoService {
     
-    private final List<PagoModel> listaPagos = new ArrayList<>();
+    @Autowired
+    private PagoRepository pagoRepository;
 
-    public PagoModel registrarPago(PagoModel pago) {
+    @Transactional
+    public Optional<PagoModel> registrarPago(PagoModel pago) {
         if (pago == null) {
-            throw new MontoInvalidoException("El pago no puede ser nulo");
+            return Optional.empty();
         }
         if (pago.getMonto() <= 0) {
-            throw new MontoInvalidoException("El monto debe ser mayor que cero");
+            return Optional.empty();
         }
         procesarPago(pago);
-        listaPagos.add(pago);
-        return pago;
+        return Optional.of(pagoRepository.save(pago));
     }
 
     public List<PagoModel> listarPagos() {
-        return new ArrayList<>(listaPagos);
+        return pagoRepository.findAll();
     }
 
-    public PagoModel buscarPorId(String id) {
-        for (PagoModel pago : listaPagos) {
-            if (pago.getIdPago().equals(id)) {
-                return pago;
-            }
-        }
-        throw new PagoNoEncontradoException("Pago no encontrado con ID: " + id);
+    public Optional<PagoModel> buscarPorId(String id) {
+        return pagoRepository.findByIdPago(id);
     }
 
     public boolean validarMetodoPago(PagoModel pago) {
@@ -49,15 +47,23 @@ public class PagoService {
         }
     }
 
-    public void cancelarPago(PagoModel pago) {
-        pago.setProcesado(false);
-        pago.setEstado("CANCELADO");
+    @Transactional
+    public Optional<PagoModel> cancelarPago(String idPago) {
+        Optional<PagoModel> pagoOpt = pagoRepository.findByIdPago(idPago);
+        if (pagoOpt.isPresent()) {
+            PagoModel pago = pagoOpt.get();
+            pago.setProcesado(false);
+            pago.setEstado("CANCELADO");
+            return Optional.of(pagoRepository.save(pago));
+        }
+        return Optional.empty();
     }
 
     public String generarComprobante(PagoModel pago) {
         return "Comprobante - Pago: " + pago.getIdPago() + ", Monto: " + pago.getPrecio() + ", Metodo: " + pago.getMetodoPago();
     }
 
+    @Transactional
     public boolean procesarDevolucion(DevolucionPago devolucion) {
         if (devolucion.validarTransaccion()) {
             devolucion.setApproved(true);
@@ -66,5 +72,9 @@ public class PagoService {
         }
         devolucion.setEstado("RECHAZADA");
         return false;
+    }
+    
+    public List<PagoModel> findByClienteId(String idCliente) {
+        return pagoRepository.findByClienteIdCliente(idCliente);
     }
 }

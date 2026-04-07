@@ -2,8 +2,8 @@ package co.ucc.pedidos.data;
 
 import co.ucc.pedidos.model.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class DatosPrueba {
@@ -96,8 +96,8 @@ public class DatosPrueba {
 
     public static FechaPedidoModel crearFechaPedido() {
         FechaPedidoModel fecha = new FechaPedidoModel();
-        fecha.setFechaPedir(new Date());
-        fecha.setFechaEstimada(new Date(System.currentTimeMillis() + 86400000));
+        fecha.setFechaPedir(LocalDateTime.now());
+        fecha.setFechaEstimada(LocalDateTime.now().plusDays(1));
         return fecha;
     }
 

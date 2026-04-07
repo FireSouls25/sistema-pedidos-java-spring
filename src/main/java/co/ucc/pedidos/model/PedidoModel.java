@@ -1,13 +1,36 @@
 package co.ucc.pedidos.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+
+@Entity
+@Table(name = "pedido")
 public class PedidoModel {
-    private double precio;
+    @Id
+    @Column(name = "id_pedido")
     private String idPedido;
-    private EstadoModel estado;
+    @Column(name = "precio")
+    private double precio;
+    @Column(name = "categoria", length = 100)
     private String categoria;
+    @Column(name = "lugar_entrega", length = 255)
     private String lugarEntrega;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_estado")
+    private EstadoModel estado;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_fecha_pedido")
     private FechaPedidoModel fechaPedido;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
     private ClienteModel cliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto")
     private ProductoModel producto;
 
     public PedidoModel() {

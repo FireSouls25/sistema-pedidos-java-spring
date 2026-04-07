@@ -2,6 +2,7 @@ package co.ucc.pedidos.controller;
 
 import co.ucc.pedidos.model.PagoModel;
 import co.ucc.pedidos.service.PagoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,8 +17,10 @@ public class PagoController {
     }
 
     @PostMapping
-    public PagoModel registrarPago(@RequestBody PagoModel pago) {
-        return pagoService.registrarPago(pago);
+    public ResponseEntity<PagoModel> registrarPago(@RequestBody PagoModel pago) {
+        return pagoService.registrarPago(pago)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @GetMapping
@@ -26,7 +29,9 @@ public class PagoController {
     }
 
     @GetMapping("/{id}")
-    public PagoModel obtenerPago(@PathVariable String id) {
-        return pagoService.buscarPorId(id);
+    public ResponseEntity<PagoModel> obtenerPago(@PathVariable String id) {
+        return pagoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

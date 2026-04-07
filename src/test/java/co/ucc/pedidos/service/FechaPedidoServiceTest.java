@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ class FechaPedidoServiceTest {
 
     @Test
     void testCalcularFechaEstimada() {
-        Date resultado = fechaPedidoService.calcularFechaEstimada(fechaPedido);
+        LocalDateTime resultado = fechaPedidoService.calcularFechaEstimada(fechaPedido);
         
         assertNotNull(resultado);
         assertEquals(fechaPedido.getFechaEstimada(), resultado);
@@ -35,14 +35,14 @@ class FechaPedidoServiceTest {
 
     @Test
     void testCalcularFechaEstimada_Nulo() {
-        Date resultado = fechaPedidoService.calcularFechaEstimada(null);
+        LocalDateTime resultado = fechaPedidoService.calcularFechaEstimada(null);
         
         assertNull(resultado);
     }
 
     @Test
     void testActualizarFechaRecibo() {
-        Date nuevaFecha = new Date();
+        LocalDateTime nuevaFecha = LocalDateTime.now();
         
         fechaPedidoService.actualizarFechaRecibo(fechaPedido, nuevaFecha);
         
@@ -52,14 +52,14 @@ class FechaPedidoServiceTest {
     @Test
     void testActualizarFechaRecibo_Nulo() {
         assertDoesNotThrow(() -> {
-            fechaPedidoService.actualizarFechaRecibo(null, new Date());
+            fechaPedidoService.actualizarFechaRecibo(null, LocalDateTime.now());
         });
     }
 
     @Test
     void testVerificarRetrasoPedido_ConRetraso() {
-        fechaPedido.setFechaEstimada(new Date(System.currentTimeMillis() - 86400000));
-        fechaPedido.setFechaRecibir(new Date());
+        fechaPedido.setFechaEstimada(LocalDateTime.now().minusDays(1));
+        fechaPedido.setFechaRecibir(LocalDateTime.now());
         
         boolean resultado = fechaPedidoService.verificarRetrasoPedido(fechaPedido);
         
@@ -68,8 +68,8 @@ class FechaPedidoServiceTest {
 
     @Test
     void testVerificarRetrasoPedido_SinRetraso() {
-        fechaPedido.setFechaEstimada(new Date(System.currentTimeMillis() + 86400000));
-        fechaPedido.setFechaRecibir(new Date());
+        fechaPedido.setFechaEstimada(LocalDateTime.now().plusDays(1));
+        fechaPedido.setFechaRecibir(LocalDateTime.now());
         
         boolean resultado = fechaPedidoService.verificarRetrasoPedido(fechaPedido);
         
