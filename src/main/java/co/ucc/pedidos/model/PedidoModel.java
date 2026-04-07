@@ -15,27 +15,26 @@ public class PedidoModel {
     @Column(name = "id_pedido")
     private String idPedido;
     @Column(name = "precio")
-    private double precio;
+    private Double precio;
     @Column(name = "categoria", length = 100)
     private String categoria;
     @Column(name = "lugar_entrega", length = 255)
     private String lugarEntrega;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_estado")
+    @JoinColumn(name = "id_estado", nullable = true)
     private EstadoModel estado;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_fecha_pedido")
+    @JoinColumn(name = "id_fecha_pedido", nullable = true)
     private FechaPedidoModel fechaPedido;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente")
+    @JoinColumn(name = "id_cliente", nullable = true)
     private ClienteModel cliente;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_producto")
+    @JoinColumn(name = "id_producto", nullable = true)
     private ProductoModel producto;
 
     public PedidoModel() {
-        this.estado = new EstadoModel();
-        this.fechaPedido = new FechaPedidoModel();
+        // No inicializar estado y fechaPedido aquí - se manejarán como opcionales
     }
 
     public PedidoModel(String idPedido, double precio, String categoria, String lugarEntrega) {
@@ -43,12 +42,10 @@ public class PedidoModel {
         this.precio = precio;
         this.categoria = categoria;
         this.lugarEntrega = lugarEntrega;
-        this.estado = new EstadoModel();
-        this.fechaPedido = new FechaPedidoModel();
     }
 
-    public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public Double getPrecio() { return precio; }
+    public void setPrecio(Double precio) { this.precio = precio; }
 
     public String getIdPedido() { return idPedido; }
     public void setIdPedido(String idPedido) { this.idPedido = idPedido; }

@@ -15,7 +15,7 @@ public class PagoModel extends Transaccion {
     @Column(name = "id_pago")
     private String idPago;
     @Column(name = "precio")
-    private double precio;
+    private Double precio;
     @Column(name = "metodo_pago", length = 50)
     private String metodoPago;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,15 +41,15 @@ public class PagoModel extends Transaccion {
         return metodoPago != null && !metodoPago.isEmpty() && getMonto() > 0;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
-    public double getMonto() {
+    public Double getMonto() {
         return precio;
     }
 
