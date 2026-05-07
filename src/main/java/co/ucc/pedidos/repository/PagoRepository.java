@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import co.ucc.pedidos.model.PagoModel;
+import co.ucc.pedidos.model.PagoTarjetaModel;
 
 @Repository
 public interface PagoRepository extends JpaRepository<PagoModel, String> {
@@ -20,4 +21,5 @@ public interface PagoRepository extends JpaRepository<PagoModel, String> {
     boolean existsByIdPago(String idPago);
 
     void deleteByIdPago(String idPago);
+
 }

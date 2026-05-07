@@ -2,6 +2,7 @@ package co.ucc.pedidos.service;
 
 import co.ucc.pedidos.model.DevolucionPago;
 import co.ucc.pedidos.model.PagoModel;
+import co.ucc.pedidos.model.PagoTarjetaModel;
 import co.ucc.pedidos.repository.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PagoService {
     
     @Autowired
     private PagoRepository pagoRepository;
+
+    public List<PagoTarjetaModel> listarPagosTarjeta() {
+        return (List<PagoTarjetaModel>) pagoRepository.findByMetodoPago("TARJETA")
+                .stream()
+                .map(pago -> (PagoTarjetaModel) pago)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public Optional<PagoModel> registrarPago(PagoModel pago) {
@@ -76,5 +85,6 @@ public class PagoService {
     
     public List<PagoModel> findByClienteId(String idCliente) {
         return pagoRepository.findByClienteIdCliente(idCliente);
+
     }
 }

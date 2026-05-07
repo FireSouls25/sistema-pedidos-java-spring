@@ -50,6 +50,14 @@ package "model" {
         + generarComprobante(): String
     }
 
+    class PagoTarjetaModel extends PagoModel {
+        - numeroTarjeta: String
+        ..
+        + PagoTarjetaModel()
+        + getNumeroTarjeta(): String
+        + setNumeroTarjeta(String)
+    }
+
     class DevolucionPago extends Transaccion {
         - motivo: String
         - pagoOriginal: PagoModel
@@ -308,6 +316,7 @@ package "service" {
         + cancelarPago(String): Optional<PagoModel>
         + generarComprobante(PagoModel): String
         + procesarDevolucion(DevolucionPago): boolean
+        + listarPagosTarjeta(): List<PagoTarjetaModel>
     }
     
     class ClienteService {
@@ -343,6 +352,7 @@ package "controller" {
         + registrarPago(PagoModel): ResponseEntity<PagoModel>
         + listarPagos(): List<PagoModel>
         + obtenerPago(String): ResponseEntity<PagoModel>
+        + listarPagosTarjeta(): ResponseEntity<List<PagoTarjetaModel>>
     }
     
     class ClienteController {
@@ -358,6 +368,7 @@ package "controller" {
 ' Relaciones de Herencia
 PagoModel -up-> Transaccion
 DevolucionPago -up-> Transaccion
+PagoTarjetaModel -up-> PagoModel
 
 ' Relaciones de Asociacion
 DevolucionPago --> PagoModel : pagoOriginal

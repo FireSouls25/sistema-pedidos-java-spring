@@ -1,6 +1,7 @@
 package co.ucc.pedidos.controller;
 
 import co.ucc.pedidos.model.PagoModel;
+import co.ucc.pedidos.model.PagoTarjetaModel;
 import co.ucc.pedidos.service.PagoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,10 @@ public class PagoController {
         return pagoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/tarjeta")
+    public ResponseEntity<List<PagoTarjetaModel>> listarPagosTarjeta() {
+        return ResponseEntity.ok(pagoService.listarPagosTarjeta());
     }
 }
